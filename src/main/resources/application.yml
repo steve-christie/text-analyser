@@ -1,0 +1,9 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /text_analyser
+
+spring:
+  security:
+    user:
+      name: user
