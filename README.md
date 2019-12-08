@@ -5,8 +5,8 @@ accessed via a REST API.
 
 ## Api
 The API is available at the following paths:
-* POST: `/text_analyser/string`
-* POST: `/text_analyser/file`
+* POST: `/analyser/string`
+* POST: `/analyser/file`
 
 ### Inputs:
 Both paths accept JSON as their input, with the keys differing slightly for each.
@@ -49,7 +49,7 @@ demonstrating how the API can be used via command line:
 ##### Posting to /text_analyser/string 
 ```
 curl -X POST \
-  http://localhost:8080/text_analyser/string \
+  http://localhost:8080/analyser/string \
   -H 'Content-Type: application/json' \
   -d '{"text": "sample text value"}'
 ```
@@ -57,7 +57,7 @@ curl -X POST \
 ##### Posting to /text_analyser/file 
 ```
 curl -X POST \
-  http://localhost:9006/text_analyser/file \
+  http://localhost:9006/analyser/file \
   -H 'Content-Type: application/json' \
   -d '{"filePath":"/root/to/file/file.txt"}'
 ```
@@ -83,6 +83,9 @@ there are notes below on how you can change the port used.
 3. Navigate to the pom.xml in the project directory and open from here
 
 If Intellij is not configured to automatically download all import sources, ensure this is done manually.
+
+You will also need to download the Lombok plugin as well as turn on the 'Enable Annotation Processing' setting found
+under 'Build, Execution, Deployment > Compiler > Annotation Processors'
 
 The service can be started by finding the 'TextAnalyserApplication' class in the project directory, righting clicking 
 and choosing the 'Run' option. Alternatively, a run configuration can be set up via Run > Edit Configurations.
@@ -138,7 +141,7 @@ The 'sample_data' folder has been preloaded with a 'sample_file.txt' file, so wh
 this will be available in "/var/sample_data/sample_file.txt", so doing the following should return a result:
 ```
 curl -X POST \
-  http://localhost:8080/text_analyser/file \
+  http://localhost:8080/analyser/file \
   -H 'Content-Type: application/json' \
   -d '{
 	"filePath":"/var/sample_data/sample_file.txt"

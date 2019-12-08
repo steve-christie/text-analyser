@@ -14,7 +14,7 @@ public class StringProcessorImplTest {
     private StringProcessorImpl processor;
 
     @Test
-    public void praseStringTest() {
+    public void parseStringTest() {
         TextMetadata detail =
             processor.parseData("Hello world & good morning. The date is 18/05/2016").getTextMetadata();
         assertThat(detail.getWordCount()).isEqualTo(9);

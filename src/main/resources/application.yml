@@ -1,7 +1,7 @@
 server:
   port: ${SERVER_PORT:8080}
   servlet:
-    context-path: /text_analyser
+    context-path: /analyser
 
 management:
   endpoints:

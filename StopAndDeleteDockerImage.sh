@@ -1,2 +1,2 @@
-docker rm $(docker stop $(docker ps -a -q --filter ancestor=text_analyser --format="{{.ID}}"))
+docker rm $(docker stop $(docker ps -a -q --filter ancestor=text-analyser --format="{{.ID}}"))
 docker ps
