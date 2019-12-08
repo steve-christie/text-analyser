@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "6328cdaf-815e-4ce1-9a3c-d048f9c1c74d",
+		"name": "Text Analyser",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST String",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"text\": \"sample text value\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/text_analyser/string",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"text_analyser",
+						"string"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST File",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"filePath\":\"/root/to/directory\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9006/text_analyser/file",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9006",
+					"path": [
+						"text_analyser",
+						"file"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST String Copy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"text\":\"Hello world & good morning. The date is 18/05/2016\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/text_analyser/application/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"text_analyser",
+						"application",
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

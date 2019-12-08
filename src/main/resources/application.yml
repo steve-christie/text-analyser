@@ -3,7 +3,9 @@ server:
   servlet:
     context-path: /text_analyser
 
-spring:
-  security:
-    user:
-      name: user
+management:
+  endpoints:
+    web:
+      base-path: /application
+      exposure:
+        include: info,health
