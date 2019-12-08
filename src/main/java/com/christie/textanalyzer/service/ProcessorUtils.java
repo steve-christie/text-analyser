@@ -1,6 +1,7 @@
 package com.christie.textanalyzer.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import org.apache.commons.math3.util.Precision;
 
 public class ProcessorUtils {
 
-    public static TextMetadata parseString(String text) {
+    public TextMetadata parseString(String text) {
 
         String[] words = Stream.of(removeSpecialCharactersFromString(text).split(" "))
             .filter(word -> !word.equals("")).toArray(String[]::new);
@@ -28,22 +29,23 @@ public class ProcessorUtils {
             .averageWordLength(Precision.round(averageLength, 3))
             .wordLengths(lengths)
             .frequency(frequency)
+            .words(Arrays.asList(words))
             .build();
     }
 
-    public static OptionalDouble getAverageLengthOfStringsInArray(Stream<String> words) {
+    public OptionalDouble getAverageLengthOfStringsInArray(Stream<String> words) {
         return words.map(String::length)
             .mapToDouble(Integer::doubleValue)
             .average();
     }
 
-    public static Map<Integer, Integer> countLengthOfEachWordAndCollect(Stream<String> words) {
+    public Map<Integer, Integer> countLengthOfEachWordAndCollect(Stream<String> words) {
         Map<Integer, Integer> lengths = new HashMap<>();
         words.forEach(word -> incrementCountsInMap(lengths, word.length(), 1));
         return lengths;
     }
 
-    public static void incrementCountsInMap(Map<Integer, Integer> lengths, Integer length, Integer incrementalValue) {
+    public void incrementCountsInMap(Map<Integer, Integer> lengths, Integer length, Integer incrementalValue) {
         if (lengths.containsKey(length)) {
             lengths.put(length, lengths.get(length) + incrementalValue);
         } else {
@@ -51,7 +53,7 @@ public class ProcessorUtils {
         }
     }
 
-    public static String removeSpecialCharactersFromString(String word) {
+    public String removeSpecialCharactersFromString(String word) {
         return word.replace("?", "")
             .replace(".(", " ")
             .replace(":", "")
@@ -63,7 +65,7 @@ public class ProcessorUtils {
             .replace(",", "");
     }
 
-    public static WordFrequency calculateWordFrequency(Map<Integer, Integer> lengths) {
+    public WordFrequency calculateWordFrequency(Map<Integer, Integer> lengths) {
         Integer highestValue = lengths.values().stream().max(Integer::compareTo).get();
 
         List<Integer> l = new ArrayList<>();

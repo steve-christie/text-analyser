@@ -1,8 +1,5 @@
 package com.christie.textanalyzer.service;
 
-import static com.christie.textanalyzer.service.ProcessorUtils.calculateWordFrequency;
-import static com.christie.textanalyzer.service.ProcessorUtils.incrementCountsInMap;
-import static com.christie.textanalyzer.service.ProcessorUtils.parseString;
 import static java.util.Collections.singletonList;
 
 import java.io.File;
@@ -20,17 +17,18 @@ import org.apache.commons.math3.util.Precision;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FileProcessorImpl implements Processor {
+public class FileProcessorImpl extends ProcessorUtils implements Processor {
 
     public AnalyserResponse parseData(String path) {
         AnalyserResponse response = new AnalyserResponse();
-        List<TextMetadata> lineDetails = new ArrayList<>();
+        List<TextMetadata> lineMetadata = new ArrayList<>();
         File file = new File(path);
+        List<String> wordsLengths = new ArrayList<>();
         createLineIteratorFromFile(file).ifPresentOrElse(iterator ->
-                iterateOverLines(iterator, lineDetails),
+                iterateOverLines(iterator, lineMetadata, wordsLengths),
             () -> response.setErrors(singletonList("Unable to load file, please check path")));
 
-        TextMetadata metadata = collectTextDetail(lineDetails);
+        TextMetadata metadata = collateMetaData(lineMetadata, wordsLengths);
         response.setTextMetadata(metadata);
         return response;
     }
@@ -43,12 +41,14 @@ public class FileProcessorImpl implements Processor {
         }
     }
 
-    private void iterateOverLines(LineIterator iterator, List<TextMetadata> lineDetails) {
+    private void iterateOverLines(LineIterator iterator, List<TextMetadata> lineMetadata, List<String> words) {
         try {
             while (iterator.hasNext()) {
                 String line = iterator.nextLine();
                 if (!line.equals("")) {
-                    lineDetails.add(parseString(line));
+                    TextMetadata meta = parseString(line);
+                    lineMetadata.add(meta);
+                    words.addAll(meta.getWords());
                 }
             }
         } finally {
@@ -56,20 +56,21 @@ public class FileProcessorImpl implements Processor {
         }
     }
 
-    private TextMetadata collectTextDetail(List<TextMetadata> lineDetails) {
+    private TextMetadata collateMetaData(List<TextMetadata> lineMetadata, List<String> words) {
         TextMetadata detail = new TextMetadata();
 
-        if (lineDetails.isEmpty()) {
+        if (lineMetadata.isEmpty()) {
             return detail;
         }
 
-        lineDetails.forEach(line -> {
+
+        lineMetadata.forEach(line -> {
             long newWordCount = line.getWordCount() + detail.getWordCount();
             detail.setWordCount(newWordCount);
             line.getWordLengths().forEach((k, v) -> incrementCountsInMap(detail.getWordLengths(), k, v));
             detail.setAverageWordLength(line.getAverageWordLength() + detail.getAverageWordLength());
         });
-        detail.setAverageWordLength(Precision.round(detail.getAverageWordLength() / lineDetails.size(), 3));
+        detail.setAverageWordLength(Precision.round(getAverageLengthOfStringsInArray(words.stream()).getAsDouble(), 3));
         detail.setFrequency(calculateWordFrequency(detail.getWordLengths()));
         return detail;
     }

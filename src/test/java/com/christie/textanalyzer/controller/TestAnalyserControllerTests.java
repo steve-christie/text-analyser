@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,18 +67,17 @@ public class TestAnalyserControllerTests {
             post("/string")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"text\":\"Hello world & good morning. The date is 18/05/2016\"}"))
-            .andExpect(status().isOk());
-        //
-        // .andExpect(content()..string("Word Count = 9\n" +
-        //     "Average Word Length = 4.556\n" +
-        //     "Number of words of length 1 is 1\n" +
-        //     "Number of words of length 2 is 1\n" +
-        //     "Number of words of length 3 is 1\n" +
-        //     "Number of words of length 4 is 2\n" +
-        //     "Number of words of length 5 is 2\n" +
-        //     "Number of words of length 7 is 1\n" +
-        //     "Number of words of length 10 is 1\n" +
-        //     "The most frequently occurring word length is 2, for word lengths of 4 & 5\n"));
+            .andExpect(status().isOk())
+            .andExpect(content().string("Word Count = 9\n" +
+                "Average Word Length = 4.556\n" +
+                "Number of words of length 1 is 1\n" +
+                "Number of words of length 2 is 1\n" +
+                "Number of words of length 3 is 1\n" +
+                "Number of words of length 4 is 2\n" +
+                "Number of words of length 5 is 2\n" +
+                "Number of words of length 7 is 1\n" +
+                "Number of words of length 10 is 1\n" +
+                "The most frequently occurring word length is 2, for word lengths of 4 & 5\n"));
     }
 
     @Test
